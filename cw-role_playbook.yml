@@ -1,0 +1,6 @@
+---
+
+- name: PLAY CW-ROLE
+  hosts: "{{ target }}"
+  roles:
+  - CW-ROLE

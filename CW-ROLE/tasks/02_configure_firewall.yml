@@ -1,0 +1,25 @@
+---
+
+- name: open port 80/service http
+  ansible.posix.firewalld:
+    service: http
+    permanent: yes
+    immediate: yes
+    state: enabled
+  become: yes
+
+- name: open port 443/service https
+  ansible.posix.firewalld:
+    service: https
+    permanent: yes
+    immediate: yes
+    state: enabled
+  become: yes
+
+- name: open port 5432/service postgresql
+  ansible.posix.firewalld:
+    service: postgresql
+    permanent: yes
+    immediate: yes
+    state: enabled
+  become: yes

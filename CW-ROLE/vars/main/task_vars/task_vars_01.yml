@@ -1,0 +1,6 @@
+---
+
+#settings for hostname and ip
+fqdn_name: YourFullQueryDomainName.com
+ip: LocalIPOfClient
+hostname: NameOfClient

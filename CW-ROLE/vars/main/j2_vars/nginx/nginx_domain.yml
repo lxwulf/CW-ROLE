@@ -1,0 +1,9 @@
+---
+
+# nginx settings for the domain configuration file
+
+max_age: 31536000                            # HSTS Header age
+root_folder: /usr/share/nginx/cw             # root directory of the webspace
+client_body_timeout: 3m                      # on large files this should be adapted to longer timeouts default is 300s
+client_max_body_size: 102400M                # upload_max_filesize from the php configuration 
+                                             # file (php.ini) should be the same value

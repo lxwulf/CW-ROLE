@@ -1,0 +1,7 @@
+---
+
+#settings for ntp server in 03_setup_ntp.yml
+ntp_server0: YourTimeServerOfYourLocation 
+ntp_server1: YourTimeServerOfYourLocation
+ntp_server2: YourTimeServerOfYourLocation
+ntp_server3: YourTimeServerOfYourLocation

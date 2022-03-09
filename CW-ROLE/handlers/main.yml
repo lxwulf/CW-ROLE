@@ -1,0 +1,27 @@
+---
+
+- name: apply selinux fcontext
+  ansible.builtin.command: restorecon -irv /usr/share/nginx/cloudwulf
+  when: selinux_configuration.changed
+  become: yes
+
+- name: restart timesyncd
+  ansible.builtin.systemd:
+    name: systemd-timesyncd
+    state: restarted
+  when: ntp_configuration.changed
+  become: yes
+
+- name: restart nginx
+  ansible.builtin.systemd:
+    name: nginx
+    state: restarted
+  when: nginx_configuration.changed
+  become: yes
+
+- name: restart php-fpm
+  ansible.builtin.systemd:
+    name: php-fpm
+    state: restarted
+  when: phpfpm_configuration.changed
+  become: yes

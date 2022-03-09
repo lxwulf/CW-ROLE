@@ -1,0 +1,22 @@
+---
+
+- name: copy configuration for php
+  ansible.builtin.template:
+    src: php/php.ini.j2
+    dest: /etc/php.ini
+    owner: root
+    group: root
+    mode: '0644'
+  become: yes
+
+- name: copy configuration for php-fpm/www.conf
+  ansible.builtin.template:
+    src:  php/php-fpm.d/www.conf.j2
+    dest: /etc/php-fpm.d/www.conf
+    owner: root
+    group: root
+    mode: '0644'
+  become: yes
+  register: phpfpm_configuration
+  notify:
+    - restart php-fpm

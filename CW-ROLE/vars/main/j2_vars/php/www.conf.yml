@@ -1,0 +1,8 @@
+---
+
+max_children: 384
+start_servers: 96
+min_spare_servers: 96
+max_spare_servers: 288
+clear_env: no
+php_user: nginx

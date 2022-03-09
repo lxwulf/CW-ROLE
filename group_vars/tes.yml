@@ -1,0 +1,8 @@
+---
+
+# user std logins
+ansible_user: "{{ client_user }}"
+ansible_password: "{{ client_password }}"
+ansible_become_password: "{{ client_password }}"
+ansible_python_interpreter: /usr/bin/python3
+ansible_connection: ssh

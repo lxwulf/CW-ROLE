@@ -1,0 +1,38 @@
+---
+
+- name: execute initialization of the database 
+  ansible.builtin.command: /usr/bin/postgresql-setup --initdb
+  args:
+    creates: /var/lib/pgsql/data/postgresql.conf
+  become: yes
+
+- name: copy configs for postgresql
+  ansible.builtin.template:
+    src: templates/postgresql/postgresql.conf.j2
+    dest: /var/lib/pgsql/data/postgresql.conf
+    owner: postgres
+    group: postgres
+    mode: '0600'
+  become: yes
+
+- name: copy configs for postgresql connection restrictions
+  ansible.builtin.template:
+    src: templates/postgresql/pg_hba.conf.j2
+    dest: /var/lib/pgsql/data/pg_hba.conf
+    owner: postgres
+    group: postgres
+    mode: '0600'
+  become: yes
+
+- name: starting postgresql for initialization of clouddb and user
+  ansible.builtin.systemd:
+    name: postgresql
+    enabled: yes
+    state: started
+  become: yes
+
+- name: execute the script for setup of clouddb and user
+  ansible.builtin.script: lib/{{ dbscript }}
+  args:
+    creates: /var/lib/pgsql/data/base/16384/pg_internal.init
+    executable: python3

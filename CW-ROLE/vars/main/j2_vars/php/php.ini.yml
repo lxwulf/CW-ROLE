@@ -1,0 +1,7 @@
+---
+
+# This settings should be set to your wishes
+
+upload_max_filesize: 102400M
+max_file_uploads: 20
+post_max_size: 128000M                        #should be always larger than upload_max_filesize
