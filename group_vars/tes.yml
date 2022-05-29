@@ -1,8 +1,7 @@
 ---
 
-# user std logins
-ansible_user: "{{ client_user }}"
-ansible_password: "{{ client_password }}"
-ansible_become_password: "{{ client_password }}"
-ansible_python_interpreter: /usr/bin/python3
-ansible_connection: ssh
+ansible_user: "{{ client_user }}"                                               # user std logins
+ansible_password: "{{ client_password }}"                                       # user std password
+ansible_become_password: "{{ client_password }}"                                # user std password for root privileges
+ansible_python_interpreter: /usr/bin/python3                                    # used python interpreter on the remote machine
+ansible_connection: ssh                                                         # defined connection type for the remote host
