@@ -1,28 +1,20 @@
-#=====================================
-#= ANSIBLE_PUSHED_CONFIGURATION_FILE =
-#=====================================
-#
-#====================
-#= Path             =
-#====================
-#
-#-----------------------
-#- /var/lib/pgsql/data -
-#-----------------------
-
+# =====================================
+# = ANSIBLE_PUSHED_CONFIGURATION_FILE =
+# =====================================
 
 # TYPE  DATABASE        USER            ADDRESS                 METHOD
 
 # "local" is for Unix domain socket connections only
-local   all             all                                     peer
+local   all             all                                     trust
+
 # IPv4 local connections:
-host    all             all             127.0.0.1/32            ident
+host    all             all             127.0.0.1/24            trust
+
 # IPv6 local connections:
-host    all             all             ::1/128                 ident
+# host    all             all             ::1/128                 ident
+
 # Allow replication connections from localhost, by a user with the
 # replication privilege.
-local   replication     all                                     peer
-host    replication     all             127.0.0.1/32            ident
-host    replication     all             ::1/128                 ident
-host    all             all             {{ ansible_default_ipv4['address'] }}/24        {{ password_encryption }}
-host    all             all             127.0.0.1/32            md5
+local   replication     all                                     trust
+host    replication     all             127.0.0.1/24            trust
+# host    replication     all             ::1/128                 ident
