@@ -1,0 +1,48 @@
+---
+
+- name: initial installtion of nextcloud
+  ansible.builtin.shell: |
+    php occ maintenance:install --database {{ nc_database_typ_setting }} \
+    --database-name {{ postgresql_db }} \
+    --database-user {{ postgresql_db_user }} \
+    --database-pass {{ postgresql_db_user_password }} \
+    --admin-user {{ nc_admin_user_setting }} \
+    --admin-pass {{ nc_admin_user_password_setting }} \
+  become: yes
+  become_user: nginx
+  args:
+    chdir: "{{ nextcloud_root_path }}"
+    creates: "{{ nextcloud_root_path }}/config/config.php"
+
+- name: set connection back to remote host ip {{ remote_host_ip }} in config/config.php
+  ansible.builtin.lineinfile:
+    path: "{{ nextcloud_root_path }}/config/config.php"
+    regexp: "^    0 => 'localhost',"
+    line: "    0 => '{{ remote_host_ip }}',"
+    state: present
+  become: yes
+
+- name: delete "CAN_INSTALL" file to remove possible errors
+  ansible.builtin.file:
+    path: "{{ nextcloud_root_path }}/config/CAN_INSTALL"
+    state: absent
+  become: yes
+
+- name: running occ commands for different settings
+  ansible.builtin.command: php occ config:system:set {{ setting.name }} --value="{{ setting.value }}"
+  become: yes
+  become_user: nginx
+  args:
+    chdir: "{{ nextcloud_root_path }}"
+  loop_control:
+    loop_var: setting
+  with_items:
+    - { name: "updater.release.channel", value: "{{ nc_release_channel_config_setting }}"}
+    - { name: "default_phone_region", value: "{{ nc_phone_country_config_setting }}" }
+    - { name: "redis host", value: "{{ redis_socket }}" }
+    - { name: "redis port", value: "0" }
+    - { name: "redis dbindex", value: "0"}
+    - { name: "memcache.local", value: "\\\\OC\\\\Memcache\\\\Redis"}
+    - { name: "memcache.distributed", value: "\\\\OC\\\\Memcache\\\\Redis"}
+    - { name: "memcache.locking", value: "\\\\OC\\\\Memcache\\\\Redis"}
+    - { name: "filelocking.enabled", value: True }
