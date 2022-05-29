@@ -1,0 +1,26 @@
+---
+
+- name: set hostname
+  ansible.builtin.hostname:
+    name: "{{ hostname }}"
+    use: systemd
+
+- name: setup alias for 'occ' command of nc for root user
+  ansible.builtin.lineinfile:
+    path: /root/.bashrc
+    insertafter: EOF
+    line: "alias occ='sudo -u nginx php {{ nextcloud_root_path }}/occ'"
+  become: yes
+
+- name: adding ntp servers
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/timesyncd.conf
+    regexp: '^#NTP='
+    line: NTP={{ ntp_server0 }} {{ ntp_server1 }} {{ ntp_server2 }} {{ ntp_server3 }}
+    owner: root
+    group: root
+    mode: '0644'
+  become: yes
+  register: ntp_configuration
+  notify:
+    - restart timesyncd
