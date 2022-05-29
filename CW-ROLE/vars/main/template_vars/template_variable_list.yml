@@ -1,0 +1,120 @@
+---
+
+#-------------------------------------------------------------------------------
+
+###########################
+# NGINX VARIABLE SETTINGS #
+###########################
+
+######################
+# DOMAIN SETTINGS    #
+######################
+# /etc/nginx/conf.d/ #
+######################
+
+# settings for the domain configuration in
+# /etc/nginx/conf.d/yourdomainname.conf
+
+max_age: 31536000                                                               # HSTS Header age
+domain_root_path: /usr/share/nginx/nextcloud                                    # root directory of the webspace
+client_body_timeout: 3m                                                         # on large files this should be adapted to longer timeouts default is 300s
+client_max_body_size: 102400M                                                   # upload_max_filesize should be the same value
+
+###########################
+# STANDARD NGINX SETTINGS #
+###########################
+# /etc/nginx/nginx.conf   #
+###########################
+
+# settings for the nginx base configuration
+# save in /etc/nginx/nginx.conf
+
+# so far nothing to see here =)
+# for the best experience just let the file be as it is
+
+#-------------------------------------------------------------------------------
+
+#########################
+# PHP VARIABLE SETTINGS #
+#########################
+# /etc/php.ini          #
+#########################
+
+upload_max_filesize: 102400M                                                    # set the maximal uoload size of a file
+max_file_uploads: 20                                                            # set the maximal upload tasks at the same time
+post_max_size: 128000M                                                           # should be always larger than upload_max_filesize
+memory_limit: 512M                                                              # set how much ram one script can fill
+timezone: 'Europe/Zurich'                                                       # set your timezone where you live
+
+#-------------------------------------------------------------------------------
+
+#############################
+# PHP-FPM VARIABLE SETTINGS #
+#############################
+# /etc/php-fpm.d/www.conf   #
+#############################
+
+max_children: 384                                                               # set the maximal number of child processes are allowed to spawn handle user requests
+start_servers: 96                                                               # set how much processes should start with php-fpm together at start
+min_spare_servers: 96                                                           # the minimum of child processes set to idle, fewer as the value set would make more processes
+max_spare_servers: 288                                                          # the maximum of child processes set to idle, if more processes around than defined in the value processes would be killed
+clear_env: False                                                                # this makes every environment variable available for PHP
+php_user: nginx                                                                 # set the user which has permissions to the directories of the web application, default set to nginx
+
+#-------------------------------------------------------------------------------
+
+#######################################
+# POSTGRESQL VARIABLE SETTINGS        #
+#######################################
+# /var/lib/pgsql/data/postgresql.conf #
+#######################################
+
+# DB Version: 13
+# OS Type: linux
+# DB Type: mixed
+# Total Memory (RAM): 2 GB
+# CPUs num: 4
+# Connections num: 20
+# Data Storage: hdd
+#
+# -------------------------------------------------------
+# - powered by pgtune --> https://pgtune.leopard.in.ua/ -
+# -------------------------------------------------------
+                                                                                # Tip: you can copy and paste it from the website directly, after
+                                                                                # that you only need to change the “=" to “:” this should be easy
+                                                                                # with the “find and replace” function of diverse editors.
+max_connections: 20
+shared_buffers: 512MB
+effective_cache_size: 1536MB
+maintenance_work_mem: 128MB
+checkpoint_completion_target: 0.9
+wal_buffers: 16MB
+default_statistics_target: 100
+random_page_cost: 4
+effective_io_concurrency: 2
+work_mem: 6553kB
+min_wal_size: 1GB
+max_wal_size: 4GB
+max_worker_processes: 4
+max_parallel_workers_per_gather: 2
+max_parallel_workers: 4
+max_parallel_maintenance_workers: 2
+
+# additional settings
+
+listen_addresses: '0.0.0.0'                                                     # listening adress of the postgresql server
+pgsqlport: 5432                                                                 # port number of the postgresql server, default: 5432
+
+fsync_mode: true                                                                # this settings syncs every update in the database to the disk
+                                                                                # it is a little bummer to the performance but on th positive
+                                                                                # side you have recoverable and consistent state when the OS or 
+                                                                                # Hardware is crashed
+# password_encryption: trust
+
+# log settings
+
+log_destination: stderr                                                         # only for debugging is deactivated by default in the postgresql.conf file
+log_statement: all                                                              # only for debugging is deactivated by default in the postgresql.conf file
+logging_collector: 'on'                                                         # only for debugging is deactivated by default in the postgresql.conf file
+
+#-------------------------------------------------------------------------------
