@@ -5,14 +5,9 @@
 ;=====================================
 ;
 ;;;;;;;;;;;;;;;;;;;
-;Path             ;
-;;;;;;;;;;;;;;;;;;;
-;/etc/php.ini
-;------------------
-;
-;;;;;;;;;;;;;;;;;;;
 ; About php.ini   ;
 ;;;;;;;;;;;;;;;;;;;
+
 ; PHP's initialization file, generally called php.ini, is responsible for
 ; configuring many of the aspects of PHP's behavior.
 ;
@@ -395,7 +390,7 @@ expose_php = On
 ; Maximum execution time of each script, in seconds
 ; http://php.net/max-execution-time
 ; Note: This directive is hardcoded to 0 for the CLI SAPI
-max_execution_time = 3600
+max_execution_time = 30
 
 ; Maximum amount of time each script may spend parsing request data. It's a good
 ; idea to limit this time on productions servers in order to eliminate unexpectedly
@@ -405,7 +400,7 @@ max_execution_time = 3600
 ; Development Value: 60 (60 seconds)
 ; Production Value: 60 (60 seconds)
 ; http://php.net/max-input-time
-max_input_time = 3600
+max_input_time = 60
 
 ; Maximum input variable nesting level
 ; http://php.net/max-input-nesting-level
@@ -416,7 +411,7 @@ max_input_time = 3600
 
 ; Maximum amount of memory a script may consume (128MB)
 ; http://php.net/memory-limit
-memory_limit = 6144M
+memory_limit = {{ memory_limit }}
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Error handling and logging ;
@@ -930,7 +925,7 @@ cli_server.color = On
 [Date]
 ; Defines the default timezone used by the date functions
 ; http://php.net/date.timezone
-date.timezone = Europe Zurich
+date.timezone = {{ timezone }}
 
 ; http://php.net/date.default-latitude
 ;date.default_latitude = 31.7667
@@ -1267,7 +1262,7 @@ session.use_strict_mode = 0
 session.use_cookies = 1
 
 ; http://php.net/session.cookie-secure
-session.cookie_secure = True
+;session.cookie_secure = 1
 
 ; This option forces PHP to fetch and use a cookie for storing and maintaining
 ; the session id. We encourage this operation as it's very helpful in combating
