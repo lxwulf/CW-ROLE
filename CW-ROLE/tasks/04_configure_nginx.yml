@@ -1,0 +1,53 @@
+---
+
+- name: creating folder for the nextcloud logs
+  ansible.builtin.file:
+    path: /var/log/nextcloud
+    owner: root
+    group: root
+    mode: '0711'
+    state: directory
+  become: yes
+
+- name: copy domain config to remote-host
+  ansible.builtin.template:
+    src: templates/nginx/domain.conf.j2
+    dest: /etc/nginx/conf.d/{{ config_file_name }}.conf
+    owner: root
+    group: root
+    mode: '0644'
+  become: yes
+  register: nginx_configuration
+  notify:
+    - restart nginx
+
+- name: copy nginx config to remote-host
+  ansible.builtin.template:
+    src: templates/nginx/nginx_main_configuration.conf.j2
+    dest: /etc/nginx/nginx.conf
+    owner: root
+    group: root
+    mode: '0644'
+  become: yes
+  register: nginx_configuration
+  notify:
+    - restart nginx
+
+- name: copy agent block rules for nginx
+  ansible.builtin.template:
+    src: templates/nginx/agents.rules.j2
+    dest: /etc/nginx/agents.rules
+    owner: root
+    group: root
+    mode: '0644'
+  become: yes
+  register: nginx_configuration
+  notify:
+    - restart nginx
+
+- name: start and enable nginx
+  ansible.builtin.systemd:
+    name: nginx
+    enabled: yes
+    state: restarted
+  become: yes
