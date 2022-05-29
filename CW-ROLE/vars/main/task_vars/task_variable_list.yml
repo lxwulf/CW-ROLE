@@ -1,0 +1,95 @@
+---
+
+##############################
+# variable for playbook file #
+##############################
+
+target: tes                                                                     # hostgroup name
+client_password: OfficerK49                                                     # remote client password
+client_user: ok                                                                 # remote client user
+
+#####################
+# 01_configure_host #
+#####################
+
+fqdn_name: private.cloudwulf.ch                                                 # full query domain name
+remote_host_ip: 192.168.1.101                                                   # remote client local ip
+hostname: private                                                               # hostname of the remote client
+
+ntp_server0: 0.ch.pool.ntp.org                                                  # network time server
+ntp_server1: 1.ch.pool.ntp.org                                                  # network time server
+ntp_server2: 2.ch.pool.ntp.org                                                  # network time server
+ntp_server3: 3.ch.pool.ntp.org                                                  # network time server
+
+##########################
+# 03_installing_packages #
+##########################
+
+packages:
+  - tmux
+  - nginx
+  - postgresql-server
+  - postgresql-contrib
+  - postgresql-upgrade
+  - redis
+  - php
+  - php-pgsql                                                                   # php module for postgresql support
+  - php-bcmath
+  - php-cli
+  - php-fpm
+  - php-gd
+  - php-gmp
+  - php-intl
+  - php-ldap
+  - php-mbstring
+  - php-smbclient
+  - php-xml
+  - php-common
+  - php-pecl-igbinary
+  - php-pecl-imagick
+  - php-pecl-redis5
+  - php-pecl-zip
+  - php-curl
+  - php-intl
+  - php-process                                                                 # aka php-posix
+  - certbot
+  - python3-certbot-nginx
+  - python3-pip
+
+temp_path: /home/ok/                                                            # temporary path to download nextcloud, also 
+                                                                                # used in some other tasks as temporary download path
+
+nextcloud_root_path: /usr/share/nginx/nextcloud                                 # target path to copy content of the nextcloud zip file
+
+########################
+# variable for task XX #                                    NOT YET IMPLEMENTED
+########################
+
+postgresql_db: nextclouddb                                                      # default database name for nextcloud, also used for the occ command of nextcloud
+postgresql_db_user: ncadmin                                                     # default admin user for the nextcloud database, also used for the occ command of nextcloud
+postgresql_db_user_password: OfficerK49                                         # default password for the database this should be something strong, also used for the occ command of nextcloud
+postgresql_db_comment: "{{ postgresql_db }} database with owner {{ postgresql_db_user }}"
+
+######################
+# 04_configure_nginx #
+######################
+
+config_file_name: nextcloud                                                     # could be every name you like, it would make it easier to
+                                                                                # find it again with a easier name which makes sense
+
+######################
+# 05_configure_redis #
+######################
+
+redis_config: /etc/redis/redis.conf
+redis_socket: /run/redis/redis.sock
+
+###################
+# 09_configure_nc #
+###################
+
+nc_database_typ_setting: pgsql                                                  # set the database typ for the installation of nextcloud with the occ command
+nc_admin_user_setting: admin                                                    # set the default admin user
+nc_admin_user_password_setting: OfficerK49                                      # set the password for the default admin user
+nc_phone_country_config_setting: CH                                             # sets the default region/country code for telephone numbers
+nc_release_channel_config_setting: stable                                       # sets the default update channel to stable you can change it to beta on your own responsibility
