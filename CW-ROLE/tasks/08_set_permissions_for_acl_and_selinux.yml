@@ -2,7 +2,7 @@
 
 - name: set RW permissions for nginx and php-fpm
   community.general.sefcontext:
-    target: '/usr/share/nginx/nextcloud(/.*)?'
+    target: '{{ nextcloud_root_path }}(/.*)?'
     setype: httpd_sys_rw_content_t
     state: present
   become: yes
@@ -17,7 +17,7 @@
     persistent: yes
   become: yes
 
-- name: set permissions for NGINX to make network requests
+- name: set permissions for the system to make network requests
   ansible.posix.seboolean:
     name: httpd_can_network_connect
     state: yes
