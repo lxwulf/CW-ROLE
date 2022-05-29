@@ -2,12 +2,6 @@
 ;==ANSIBLE_PUSHED_CONFIGURATION_FILE==
 ;=====================================
 ;
-;;;;;;;;;;;;;;;;;;;
-;Path             ;
-;;;;;;;;;;;;;;;;;;;
-;/etc/php-fpm.d/www.conf
-;------------------
-;
 ; Start a new pool named 'www'.
 ; the variable $pool can be used in any directive and will be replaced by the
 ; pool name ('www' here)
@@ -55,15 +49,15 @@ listen = /run/php-fpm/www.sock
 ; permissions must be set in order to allow connections from a web server.
 ; Default Values: user and group are set as the running user
 ;                 mode is set to 0660
-;listen.owner = apache
-;listen.group = apache
+;listen.owner = nobody
+;listen.group = nobody
 ;listen.mode = 0660
 
 ; When POSIX Access Control Lists are supported you can set them using
 ; these options, value is a comma separated list of user/group names.
 ; When set, listen.owner and listen.group are ignored
-listen.acl_users = apache,nginx
-;listen.acl_groups =
+listen.acl_users = nginx
+listen.acl_groups = nginx
 
 ; List of addresses (IPv4/IPv6) of FastCGI clients which are allowed to connect.
 ; Equivalent to the FCGI_WEB_SERVER_ADDRS environment variable in the original
@@ -307,23 +301,6 @@ pm.max_requests = 2000
 ;      - %{X-Powered-By}o
 ;      - %{Transfert-Encoding}o
 ;      - ....
-;  %p: PID of the child that serviced the request
-;  %P: PID of the parent of the child that serviced the request
-;  %q: the query string
-;  %Q: the '?' character if query string exists
-;  %r: the request URI (without the query string, see %q and %Q)
-;  %R: remote IP address
-;  %s: status (response code)
-;  %t: server time the request was received
-;      it can accept a strftime(3) format:
-;      The strftime(3) format must be encapsuled in a %{<strftime_format>}t tag
-;  %T: time the log has been written (the request has finished)
-;      it can accept a strftime(3) format:
-;      The strftime(3) format must be encapsuled in a %{<strftime_format>}t tag
-;  %u: remote user
-;
-; Default: "%R - %u %t \"%m %r\" %s"
-;access.format = "%R - %u %t \"%m %r%Q%q\" %s %f %{mili}d %{kilo}M %C%%"
 
 ; The log file for slow requests
 ; Default Value: not set
@@ -441,4 +418,4 @@ php_admin_flag[log_errors] = on
 php_value[session.save_handler] = files
 php_value[session.save_path]    = /var/lib/php/session
 php_value[soap.wsdl_cache_dir]  = /var/lib/php/wsdlcache
-;php_value[opcache.file_cache]  = /var/lib/php/opcache
+php_value[opcache.file_cache]  = /var/lib/php/opcache
