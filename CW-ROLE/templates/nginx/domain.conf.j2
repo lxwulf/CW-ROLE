@@ -1,111 +1,158 @@
+upstream php-handler {
+    server unix:/var/run/php-fpm/www.sock;
+}
+
 server {
     listen 80;
     listen [::]:80;
-    server_name {{ ip }} {{ fqdn_name }};
+    server_name {{ remote_host_ip }} {{ fqdn_name }};
 
-    # Add headers to serve security related headers
-    add_header X-Content-Type-Options nosniff;
-    add_header X-XSS-Protection "1; mode=block";
-    add_header X-Robots-Tag none;
-    add_header X-Download-Options noopen;
-    add_header X-Permitted-Cross-Domain-Policies none;
-    add_header Referrer-Policy no-referrer;
+#    return 301 https://$server_name$request_uri;                               # Enforce HTTPS
+#}
 
-    #this header is needed on Debian/Ubuntu/CentOS/RHEL, but not on Arch Linux.
-    add_header X-Frame-Options "SAMEORIGIN";
+#server {
+#  listen 443 ssl http2;
+#  listen [::]:443 ssl http2;
+#  server_name {{ remote_host_ip }} {{ fqdn_name }};
 
-    # Path to the root of your installation
-    root {{ root_folder }};
+  add_header Referrer-Policy                      "no-referrer"   always;       # HTTP response headers borrowed from Nextcloud `.htaccess`
+  add_header X-Content-Type-Options               "nosniff"       always;       # HTTP response headers borrowed from Nextcloud `.htaccess`
+  add_header X-Download-Options                   "noopen"        always;       # HTTP response headers borrowed from Nextcloud `.htaccess`
+  add_header X-Frame-Options                      "SAMEORIGIN"    always;       # HTTP response headers borrowed from Nextcloud `.htaccess`
+  add_header X-Permitted-Cross-Domain-Policies    "none"          always;       # HTTP response headers borrowed from Nextcloud `.htaccess`
+  add_header X-Robots-Tag                         "none"          always;       # HTTP response headers borrowed from Nextcloud `.htaccess`
+  add_header X-XSS-Protection                     "1; mode=block" always;       # HTTP response headers borrowed from Nextcloud `.htaccess`
+ 
+  root {{ domain_root_path }};                                                  # path to the root of your installation
+ 
+  access_log /var/log/nextcloud/nextcloud.access;                               # acces log of nextcloud
+  error_log /var/log/nextcloud/nextcloud.error;                                 # error log of nextcloud
+ 
+  client_max_body_size {{ client_max_body_size }};                              # set max upload size
+  client_body_timeout 300s; 
+  fastcgi_buffers 64 4K;  
+  fastcgi_hide_header X-Powered-By;                                             # remove X-Powered-by, which is an information leak
+  fastcgi_read_timeout 2048;                                                    # need to set this on my system, else i got a timeout
+                                                                                # you can comment this out and try without it
+ 
+  gzip on;                                                                      # enable gzip but do not remove ETag headers
+  gzip_vary on;
+  gzip_comp_level 4;
+  gzip_min_length 256;
+  gzip_proxied expired no-cache no-store private no_last_modified no_etag auth;
+  gzip_types 
+    application/atom+xml 
+    application/javascript
+    application/json
+    application/ld+json
+    application/manifest+json
+    application/rss+xml
+    application/vnd.geo+json
+    application/vnd.ms-fontobject
+    application/wasm
+    application/x-font-ttf
+    application/x-web-app-manifest+json
+    application/xhtml+xml
+    application/xml
+    font/opentype
+    image/bmp
+    image/svg+xml
+    image/x-icon
+    text/cache-manifest
+    text/css
+    text/plain
+    text/vcard
+    text/vnd.rim.location.xloc
+    text/vtt
+    text/x-component
+    text/x-cross-domain-policy;
 
-    access_log /var/log/nginx/nextcloud.access;
-    error_log /var/log/nginx/nextcloud.error;
+  # pagespeed off;                                                              # uncomment if your server is build with the ngx_pagespeed module
+                                                                                # this module is currently not supported
+  index index.php index.html /index.php$request_uri;
 
-    location = /robots.txt {
-        allow all;
-        log_not_found off;
-        access_log off;
+  location = / {                                                                # rule borrowed from `.htaccess` to handle microsoft dav clients
+    if ( $http_user_agent ~ ^DavClnt ) {
+      return 302 /remote.php/webdav/$is_args$args;
     }
+  }
 
-    # The following 2 rules are only needed for the user_webfinger app.
-    # Uncomment it if you're planning to use this app.
-    #rewrite ^/.well-known/host-meta /public.php?service=host-meta last;
-    #rewrite ^/.well-known/host-meta.json /public.php?service=host-meta-json
-    # last;
+  location = /robots.txt {
+    allow all;
+    log_not_found off;
+    access_log off;
+  }
 
-    location = /.well-known/carddav {
-        return 301 $scheme://$host/remote.php/dav;
+  location = /.well-known/webfinger {
+    return 301 $scheme://$host/index.php/.well-known/webfinger;
+  } 
+  
+  location = /.well-known/nodeinfo {
+    return 301 $scheme://$host/index.php/.well-known/nodeinfo;
+  }
+
+  location ^~ /.well-known {
+    # The rules in this block are an adaptation of the rules
+    # in `.htaccess` that concern `/.well-known`.
+
+    location = /.well-known/carddav { return 301 /remote.php/dav/; }
+    location = /.well-known/caldav  { return 301 /remote.php/dav/; }
+
+    location /.well-known/acme-challenge    { try_files $uri $uri/ =404; }
+    location /.well-known/pki-validation    { try_files $uri $uri/ =404; }
+
+    # Let Nextcloud's API for `/.well-known` URIs handle all other
+    # requests by passing them to the front-end controller.
+    return 301 /index.php$request_uri;
+  }
+
+  location / {
+    rewrite ^ /index.php;
+  }
+
+  location ~ ^/(?:build|tests|config|lib|3rdparty|templates|data)(?:$|/)  { return 404; }
+  location ~ ^/(?:\.|autotest|occ|issue|indie|db_|console)                { return 404; }
+
+  location ~ \.php(?:$|/) {                                                     # required for legacy support
+
+    rewrite ^/(?!index|remote|public|cron|core\/ajax\/update|status|ocs\/v[12]|updater\/.+|oc[ms]-provider\/.+|.+\/richdocumentscode\/proxy) /index.php$request_uri;
+    
+    set $path_info $fastcgi_path_info;
+    
+    try_files $fastcgi_script_name =404;
+
+    include fastcgi_params;
+    
+    fastcgi_split_path_info ^(.+?\.php)(/.*)$;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    fastcgi_param PATH_INFO $path_info;
+    fastcgi_param HTTPS off;
+    fastcgi_param modHeadersAvailable true;                                     # avoid sending the security headers twice
+    fastcgi_param front_controller_active true;                                 # enable pretty urls
+    fastcgi_pass php-handler;
+    fastcgi_intercept_errors on;
+    fastcgi_request_buffering off;
+    fastcgi_max_temp_file_size 0;
+  }
+
+  location ~ \.(?:css|js|svg|gif|png|jpg|ico|wasm|tflite|map)$ {
+    try_files $uri /index.php$request_uri;
+    add_header Cache-Control "public, max-age=15778463, immutable";             # sets immutable attribute for improved caching
+    access_log off;                                                             # optional: Don't log access to assets
+    
+    location ~ \.wasm$ {
+      default_type application/wasm;
     }
-    location = /.well-known/caldav {
-       return 301 $scheme://$host/remote.php/dav;
-    }
+  }
 
-    location ~ /.well-known/acme-challenge {
-      allow all;
-    }
+  location ~ \.woff2?$ {
+    try_files $uri /index.php$request_uri;
+    expires 7d;                                                                 # cache-control policy borrowed from `.htaccess`
+    access_log off;                                                             # optional: don't log access to assets
+  }
 
-    # set max upload size
-    client_max_body_size {{ client_max_body_size }};
-    fastcgi_buffers 64 4K;
-
-    # Disable gzip to avoid the removal of the ETag header
-    gzip off;
-
-    # Uncomment if your server is build with the ngx_pagespeed module
-    # This module is currently not supported.
-    #pagespeed off;
-
-    error_page 403 /core/templates/403.php;
-    error_page 404 /core/templates/404.php;
-
-    location / {
-       rewrite ^ /index.php;
-    }
-
-    location ~ ^/(?:build|tests|config|lib|3rdparty|templates|data)/ {
-       deny all;
-    }
-    location ~ ^/(?:\.|autotest|occ|issue|indie|db_|console) {
-       deny all;
-     }
-
-    location ~ ^/(?:index|remote|public|cron|core/ajax/update|status|ocs/v[12]|updater/.+|ocs-provider/.+|core/templates/40[34])\.php(?:$|/) {
-       include fastcgi_params;
-       fastcgi_split_path_info ^(.+\.php)(/.*)$;
-       try_files $fastcgi_script_name =404;
-       fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-       fastcgi_param PATH_INFO $fastcgi_path_info;
-       #Avoid sending the security headers twice
-       fastcgi_param modHeadersAvailable true;
-       fastcgi_param front_controller_active true;
-       fastcgi_pass unix:/run/php-fpm/www.sock;
-       fastcgi_intercept_errors on;
-       fastcgi_request_buffering off;
-    }
-
-    location ~ ^/(?:updater|ocs-provider)(?:$|/) {
-       try_files $uri/ =404;
-       index index.php;
-    }
-
-    # Adding the cache control header for js and css files
-    # Make sure it is BELOW the PHP block
-    location ~* \.(?:css|js)$ {
-        try_files $uri /index.php$uri$is_args$args;
-        add_header Cache-Control "public, max-age=7200";
-        # Add headers to serve security related headers (It is intended to
-        # have those duplicated to the ones above)
-        add_header X-Content-Type-Options nosniff;
-        add_header X-XSS-Protection "1; mode=block";
-        add_header X-Robots-Tag none;
-        add_header X-Download-Options noopen;
-        add_header X-Permitted-Cross-Domain-Policies none;
-        # Optional: Don't log access to assets
-        access_log off;
-   }
-
-   location ~* \.(?:svg|gif|png|html|ttf|woff|ico|jpg|jpeg)$ {
-        try_files $uri /index.php$uri$is_args$args;
-        # Optional: Don't log access to other assets
-        access_log off;
-   }
+  location ~ \ {                                                                # rule borrowed from `.htaccess`
+    return 301 /remote.php$request_uri;
+    try_files $uri $uri/ /index.php$request_uri;
+  }
 }
