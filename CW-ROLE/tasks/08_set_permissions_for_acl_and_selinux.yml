@@ -13,15 +13,15 @@
 - name: allow php-fpm to use execmem
   ansible.posix.seboolean:
     name: httpd_execmem
-    state: yes
-    persistent: yes
+    state: true
+    persistent: true
   become: true
 
 - name: set permissions for the system to make network requests
   ansible.posix.seboolean:
     name: httpd_can_network_connect
-    state: yes
-    persistent: yes
+    state: true
+    persistent: true
   become: true
 
 - name: change group owner of content in /var/lib/php/ to nginx instead of apache 1/3

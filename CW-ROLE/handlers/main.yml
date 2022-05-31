@@ -8,7 +8,7 @@
 - name: restart timesyncd
   ansible.builtin.systemd:
     name: systemd-timesyncd
-    enabled: yes
+    enabled: true
     state: restarted
   when: ntp_configuration.changed
   become: true
@@ -16,7 +16,7 @@
 - name: restart nginx
   ansible.builtin.systemd:
     name: nginx
-    enabled: yes
+    enabled: true
     state: restarted
   when: nginx_configuration.changed
   become: true
@@ -24,7 +24,7 @@
 - name: restart php-fpm
   ansible.builtin.systemd:
     name: php-fpm
-    enabled: yes
+    enabled: true
     state: restarted
   when: phpfpm_configuration.changed
   become: true

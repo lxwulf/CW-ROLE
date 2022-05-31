@@ -15,7 +15,7 @@
   ansible.builtin.unarchive:
     src: https://download.nextcloud.com/server/releases/latest.zip
     dest: "{{ temp_path }}"
-    remote_src: yes
+    remote_src: true
   args:
     creates: "{{ temp_path }}nextcloud/"
 
@@ -23,8 +23,8 @@
   ansible.builtin.copy:
     src: "{{ temp_path }}/nextcloud/"
     dest: "{{ nextcloud_root_path }}"
-    remote_src: yes
-    force: no
+    remote_src: true
+    force: false
     owner: nginx
     group: nginx
     mode: '0755'

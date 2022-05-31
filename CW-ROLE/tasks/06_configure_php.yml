@@ -24,6 +24,6 @@
 - name: restart php-fpm to apply configuration
   ansible.builtin.systemd:
     name: php-fpm
-    enabled: yes
+    enabled: true
     state: restarted
   become: true

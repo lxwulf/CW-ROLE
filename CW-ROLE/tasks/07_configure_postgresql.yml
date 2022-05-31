@@ -36,7 +36,7 @@
 - name: starting postgresql
   ansible.builtin.systemd:
     name: postgresql
-    enabled: yes
+    enabled: true
     state: started
   become: true
 
