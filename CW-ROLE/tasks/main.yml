@@ -4,12 +4,12 @@
 - name: import tasks
   include_tasks: "{{ item }}"
   loop:
-  - 01_configure_host.yml
-  - 02_configure_firewall.yml
-  - 03_installing_packages.yml
-  - 04_configure_nginx.yml
-  - 05_configure_redis.yml
-  - 06_configure_php.yml
-  - 07_configure_postgresql.yml
-  - 08_set_permissions_for_acl_and_selinux.yml
-  - 09_configure_nc.yml
+    - 01_configure_host.yml
+    - 02_configure_firewall.yml
+    - 03_installing_packages.yml
+    - 04_configure_nginx.yml
+    - 05_configure_redis.yml
+    - 06_configure_php.yml
+    - 07_configure_postgresql.yml
+    - 08_set_permissions_for_acl_and_selinux.yml
+    - 09_configure_nc.yml
