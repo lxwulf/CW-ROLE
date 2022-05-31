@@ -3,7 +3,7 @@
 - name: apply selinux fcontext
   ansible.builtin.command: restorecon -irv {{ nextcloud_root_path }}
   when: selinux_configuration.changed
-  become: yes
+  become: true
 
 - name: restart timesyncd
   ansible.builtin.systemd:
@@ -11,7 +11,7 @@
     enabled: yes
     state: restarted
   when: ntp_configuration.changed
-  become: yes
+  become: true
 
 - name: restart nginx
   ansible.builtin.systemd:
@@ -19,7 +19,7 @@
     enabled: yes
     state: restarted
   when: nginx_configuration.changed
-  become: yes
+  become: true
 
 - name: restart php-fpm
   ansible.builtin.systemd:
@@ -27,4 +27,4 @@
     enabled: yes
     state: restarted
   when: phpfpm_configuration.changed
-  become: yes
+  become: true

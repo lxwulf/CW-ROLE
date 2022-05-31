@@ -2,7 +2,7 @@
 
 - name: add nginx to redis group
   ansible.builtin.shell: usermod -aG redis nginx
-  become: yes
+  become: true
 
 - name: add nginx to /etc/group => redis:xxx:nginx
   ansible.builtin.lineinfile:
@@ -12,7 +12,7 @@
     owner: root
     group: root
     mode: '0644'
-  become: yes
+  become: true
 
 - name: copy config file to remote-host
   ansible.builtin.template:
@@ -21,11 +21,11 @@
     owner: redis
     group: root
     mode: '0640'
-  become: yes
+  become: true
 
 - name: start redis service
   ansible.builtin.systemd:
     name: redis
     enabled: yes
     state: restarted
-  become: yes
+  become: true

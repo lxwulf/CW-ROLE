@@ -5,7 +5,7 @@
     target: '{{ nextcloud_root_path }}(/.*)?'
     setype: httpd_sys_rw_content_t
     state: present
-  become: yes
+  become: true
   register: selinux_configuration
   notify:
    - apply selinux fcontext
@@ -15,14 +15,14 @@
     name: httpd_execmem
     state: yes
     persistent: yes
-  become: yes
+  become: true
 
 - name: set permissions for the system to make network requests
   ansible.posix.seboolean:
     name: httpd_can_network_connect
     state: yes
     persistent: yes
-  become: yes
+  become: true
 
 - name: change group owner of content in /var/lib/php/ to nginx instead of apache 1/3
   ansible.posix.acl:
@@ -31,7 +31,7 @@
     etype: user
     permissions: rwx
     state: present
-  become: yes
+  become: true
 
 - name: change group owner of content in /var/lib/php/ to nginx instead of apache 2/3
   ansible.posix.acl:
@@ -40,7 +40,7 @@
     etype: user
     permissions: rwx
     state: present
-  become: yes
+  become: true
 
 - name: change group owner of content in /var/lib/php/ to nginx instead of apache 3/3
   ansible.posix.acl:
@@ -49,4 +49,4 @@
     etype: user
     permissions: rwx
     state: present
-  become: yes
+  become: true

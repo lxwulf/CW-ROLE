@@ -10,7 +10,7 @@
     path: /root/.bashrc
     insertafter: EOF
     line: "alias occ='sudo -u nginx php {{ nextcloud_root_path }}/occ'"
-  become: yes
+  become: true
 
 - name: adding ntp servers
   ansible.builtin.lineinfile:
@@ -20,7 +20,7 @@
     owner: root
     group: root
     mode: '0644'
-  become: yes
+  become: true
   register: ntp_configuration
   notify:
     - restart timesyncd

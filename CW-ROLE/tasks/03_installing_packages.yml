@@ -4,13 +4,13 @@
   ansible.builtin.dnf:
     name: "{{ packages }}"
     state: present
-  become: yes
+  become: true
 
 - name: installing psycopg2 for postgresql task
   ansible.builtin.pip:
     name: psycopg2-binary
-  become: yes
-  
+  become: true
+
 - name: download nextcloud and unzip
   ansible.builtin.unarchive:
     src: https://download.nextcloud.com/server/releases/latest.zip
@@ -28,4 +28,4 @@
     owner: nginx
     group: nginx
     mode: '0755'
-  become: yes
+  become: true

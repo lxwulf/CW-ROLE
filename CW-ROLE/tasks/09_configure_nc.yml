@@ -8,7 +8,7 @@
     --database-pass {{ postgresql_db_user_password }} \
     --admin-user {{ nc_admin_user_setting }} \
     --admin-pass {{ nc_admin_user_password_setting }} \
-  become: yes
+  become: true
   become_user: nginx
   args:
     chdir: "{{ nextcloud_root_path }}"
@@ -20,17 +20,17 @@
     regexp: "^    0 => 'localhost',"
     line: "    0 => '{{ remote_host_ip }}',"
     state: present
-  become: yes
+  become: true
 
 - name: delete "CAN_INSTALL" file to remove possible errors
   ansible.builtin.file:
     path: "{{ nextcloud_root_path }}/config/CAN_INSTALL"
     state: absent
-  become: yes
+  become: true
 
 - name: running occ commands for different settings
   ansible.builtin.command: php occ config:system:set {{ setting.name }} --value="{{ setting.value }}"
-  become: yes
+  become: true
   become_user: nginx
   args:
     chdir: "{{ nextcloud_root_path }}"

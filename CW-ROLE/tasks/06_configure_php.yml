@@ -7,7 +7,7 @@
     owner: root
     group: root
     mode: '0644'
-  become: yes
+  become: true
 
 - name: copy configuration for php-fpm/www.conf
   ansible.builtin.template:
@@ -16,7 +16,7 @@
     owner: root
     group: root
     mode: '0644'
-  become: yes
+  become: true
   register: phpfpm_configuration
   notify:
     - restart php-fpm
@@ -26,4 +26,4 @@
     name: php-fpm
     enabled: yes
     state: restarted
-  become: yes
+  become: true

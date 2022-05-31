@@ -7,7 +7,7 @@
     group: root
     mode: '0711'
     state: directory
-  become: yes
+  become: true
 
 - name: copy domain config to remote-host
   ansible.builtin.template:
@@ -16,7 +16,7 @@
     owner: root
     group: root
     mode: '0644'
-  become: yes
+  become: true
   register: nginx_configuration
   notify:
     - restart nginx
@@ -28,7 +28,7 @@
     owner: root
     group: root
     mode: '0644'
-  become: yes
+  become: true
   register: nginx_configuration
   notify:
     - restart nginx
@@ -40,7 +40,7 @@
     owner: root
     group: root
     mode: '0644'
-  become: yes
+  become: true
   register: nginx_configuration
   notify:
     - restart nginx
@@ -50,4 +50,4 @@
     name: nginx
     enabled: yes
     state: restarted
-  become: yes
+  become: true
