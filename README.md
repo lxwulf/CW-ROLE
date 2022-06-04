@@ -72,22 +72,22 @@ the dynamic sites part of `Nextcloud`, I use `PHP 8.1`.
 
 ## 🏗️ Configuration
 
-Luckily, you only need to focus on three files.
+Luckily, you only need to focus on two files.
 
 1st is in:
 
-`CW-ROLE/vars/main/lib_vars/gen_db_variable_list.yml`
-
-2nd is in:
-
 `CW-ROLE/vars/main/task_vars/task_variable_list.yml`
 
-3rd is in:
+2nd is in:
 
 `CW-ROLE/vars/main/template_vars/template_variable_list.yml`
 
 The explanations of the variables are documented in the files
-itself.
+itself. Here are direct links to it:
+
+[1st: task_variable_list.yml](CW-ROLE/vars/main/task_vars/task_variable_list.yml)
+
+[2nd: template_variable_list.yml](CW-ROLE/vars/main/task_vars/task_variable_list.yml)
 
 Do not forget to add the `hostname` or `ip adress` of `your host` you wanna
 install `CW-Role`. You can do this in the `hosts` file which is in the root
