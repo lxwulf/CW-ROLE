@@ -1,6 +1,6 @@
 ---
 
-#-------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 ###########################
 # NGINX VARIABLE SETTINGS #
@@ -32,7 +32,7 @@ client_max_body_size: 102400M                                                   
 # so far nothing to see here =)
 # for the best experience just let the file be as it is
 
-#-------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 #########################
 # PHP VARIABLE SETTINGS #
@@ -42,11 +42,11 @@ client_max_body_size: 102400M                                                   
 
 upload_max_filesize: 102400M                                                    # set the maximal uoload size of a file
 max_file_uploads: 20                                                            # set the maximal upload tasks at the same time
-post_max_size: 128000M                                                           # should be always larger than upload_max_filesize
+post_max_size: 128000M                                                          # should be always larger than upload_max_filesize
 memory_limit: 512M                                                              # set how much ram one script can fill
 timezone: 'Europe/Zurich'                                                       # set your timezone where you live
 
-#-------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 #############################
 # PHP-FPM VARIABLE SETTINGS #
@@ -61,7 +61,7 @@ max_spare_servers: 288                                                          
 clear_env: False                                                                # this makes every environment variable available for PHP
 php_user: nginx                                                                 # set the user which has permissions to the directories of the web application, default set to nginx
 
-#-------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 #######################################
 # POSTGRESQL VARIABLE SETTINGS        #
@@ -117,4 +117,4 @@ log_destination: stderr                                                         
 log_statement: all                                                              # only for debugging is deactivated by default in the postgresql.conf file
 logging_collector: 'on'                                                         # only for debugging is deactivated by default in the postgresql.conf file
 
-#-------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
