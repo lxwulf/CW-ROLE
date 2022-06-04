@@ -92,6 +92,8 @@ itself. Here are direct links to it:
 Do not forget to add the `hostname` or `ip adress` of
 `your host` you want to install `CW-Role`. You can do this in the [hosts](hosts) file, which is in the root directory of the project.
 
+Example:
+
 ```bash
 [groupname]
 192.168.1.13
