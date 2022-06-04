@@ -89,9 +89,8 @@ itself. Here are direct links to it:
 
 [2nd: template_variable_list.yml](CW-ROLE/vars/main/task_vars/task_variable_list.yml)
 
-Do not forget to add the `hostname` or `ip adress` of `your host` you wanna
-install `CW-Role`. You can do this in the `hosts` file which is in the root
-directory of the project.
+Do not forget to add the `hostname` or `ip adress` of
+`your host` you want to install `CW-Role`. You can do this in the [hosts](hosts) file, which is in the root directory of the project.
 
 ```bash
 [groupname]
