@@ -89,6 +89,20 @@ Luckily, you only need to focus on three files.
 The explanations of the variables are documented in the files
 itself.
 
+Do not forget to add the `hostname` or `ip adress` of `your host` you wanna
+install `CW-Role`. You can do this in the `hosts` file which is in the root
+directory of the project.
+
+```bash
+[groupname]
+192.168.1.13
+192.168.1.37
+
+[groupname2]
+pro-cw-01
+dev-cw-02
+```
+
 ## ▶️ How to Execute
 
 For execute the playbook you require, `ansible` installed, sure.
