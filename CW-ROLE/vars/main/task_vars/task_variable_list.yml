@@ -56,7 +56,7 @@ packages:
   - python3-certbot-nginx
   - python3-pip
 
-temp_path: /home/ok/                                                            # temporary path to download nextcloud, also 
+temp_path: /home/ok/                                                            # temporary path to download nextcloud, also
                                                                                 # used in some other tasks as temporary download path
 
 nextcloud_root_path: /usr/share/nginx/nextcloud                                 # target path to copy content of the nextcloud zip file
