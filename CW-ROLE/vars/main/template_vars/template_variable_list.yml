@@ -63,6 +63,22 @@ php_user: nginx                                                                 
 
 # ------------------------------------------------------------------------------
 
+#############################
+# PHP-FPM VARIABLE SETTINGS #
+#############################
+# /etc/php.d/10-opcache.ini #
+#############################
+
+opcache_enabled: 1
+opcache_enabled_cli: 0
+opcache_memory_consumption: 256
+opcache_interned_strings_buffer: 12
+opcache_max_accelerated_files: 16229
+opcache_validate_timestamps: 1
+opcache_revalidate_freq: 2
+
+# ------------------------------------------------------------------------------
+
 #######################################
 # POSTGRESQL VARIABLE SETTINGS        #
 #######################################
