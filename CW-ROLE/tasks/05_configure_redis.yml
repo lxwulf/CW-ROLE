@@ -1,17 +1,11 @@
 ---
 
 - name: add nginx to redis group
-  ansible.builtin.shell: usermod -aG redis nginx
-  become: true
-
-- name: add nginx to /etc/group => redis:xxx:nginx
-  ansible.builtin.lineinfile:
-    path: /etc/group
-    regexp: '^redis:x:990:'
-    line: redis:x:990:nginx
-    owner: root
-    group: root
-    mode: '0644'
+  ansible.builtin.user:
+    name: nginx
+    groups: redis
+    append: true
+    state: present
   become: true
 
 - name: copy config file to remote-host
