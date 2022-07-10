@@ -9,6 +9,15 @@
     mode: '0644'
   become: true
 
+- name: copy configuration for opcache
+  ansible.builtin.template:
+    src: php/php.d/10-opcache.ini.j2
+    dest: /etc/php.d/10-opcache.ini
+    owner: root
+    group: root
+    mode: '0644'
+  become: true
+
 - name: copy configuration for php-fpm/www.conf
   ansible.builtin.template:
     src: php/php-fpm.d/www.conf.j2
