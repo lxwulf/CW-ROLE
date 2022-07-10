@@ -107,7 +107,7 @@ pgsqlport: 5432                                                                 
 
 fsync_mode: true                                                                # this settings syncs every update in the database to the disk
                                                                                 # it is a little bummer to the performance but on th positive
-                                                                                # side you have recoverable and consistent state when the OS or 
+                                                                                # side you have recoverable and consistent state when the OS or
                                                                                 # Hardware is crashed
 # password_encryption: trust
 
