@@ -40,7 +40,7 @@ opcache.revalidate_freq= {{ opcache_revalidate_freq }}
 
 ; If disabled, all PHPDoc comments are dropped from the code to reduce the
 ; size of the optimized code.
-;opcache.save_comments=1
+opcache.save_comments= {{ opcache_save_comments }}
 
 ; Allow file existence override (file_exists, etc.) performance feature.
 ;opcache.enable_file_override=0
