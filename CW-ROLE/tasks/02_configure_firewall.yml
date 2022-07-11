@@ -15,11 +15,3 @@
     immediate: true
     state: enabled
   become: true
-
-- name: open port 5432/service postgresql
-  ansible.posix.firewalld:
-    service: postgresql
-    permanent: true
-    immediate: true
-    state: enabled
-  become: true
