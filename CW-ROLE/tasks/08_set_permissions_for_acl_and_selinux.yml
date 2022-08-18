@@ -8,7 +8,7 @@
   become: true
   register: selinux_configuration
   notify:
-   - apply selinux fcontext
+    - apply selinux fcontext
 
 - name: allow php-fpm to use execmem
   ansible.posix.seboolean:
