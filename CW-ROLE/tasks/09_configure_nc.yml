@@ -1,6 +1,6 @@
 ---
 
-- name: initial installtion of nextcloud
+- name: initial installation of nextcloud
   ansible.builtin.shell: |
     php occ maintenance:install --database {{ nc_database_typ_setting }} \
     --database-name {{ postgresql_db }} \
