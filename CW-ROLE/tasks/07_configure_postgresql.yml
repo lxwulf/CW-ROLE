@@ -1,12 +1,12 @@
 ---
 
-- name: execute initialization of postgresql
+- name: Execute initialization of postgresql
   ansible.builtin.command: /usr/bin/postgresql-setup --initdb
   args:
     creates: /var/lib/pgsql/data/postgresql.conf
   become: true
 
-- name: copy configs for postgresql
+- name: Copy configs for postgresql
   ansible.builtin.template:
     src: templates/postgresql/postgresql.conf.j2
     dest: /var/lib/pgsql/data/postgresql.conf
@@ -15,7 +15,7 @@
     mode: '0600'
   become: true
 
-- name: copy configs for postgresql connection restrictions
+- name: Copy configs for postgresql connection restrictions
   ansible.builtin.template:
     src: templates/postgresql/pg_hba.conf.j2
     dest: /var/lib/pgsql/data/pg_hba.conf
@@ -24,7 +24,7 @@
     mode: '0600'
   become: true
 
-- name: copy sql file to remote host for executing on db server
+- name: Copy sql file to remote host for executing on db server
   ansible.builtin.template:
     src: lib/gen_db.sql.j2
     dest: /var/lib/pgsql/gen_db.sql
@@ -33,14 +33,14 @@
     mode: '0700'
   become: true
 
-- name: starting postgresql
+- name: Starting postgresql
   ansible.builtin.systemd:
     name: postgresql
     enabled: true
     state: started
   become: true
 
-- name: create database and user via sql file import
+- name: Create database and user via sql file import
   ansible.builtin.command: psql -f /var/lib/pgsql/gen_db.sql
   become: true
   become_user: postgres

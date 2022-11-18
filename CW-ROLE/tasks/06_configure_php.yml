@@ -1,6 +1,6 @@
 ---
 
-- name: copy configuration for php
+- name: Copy configuration for php
   ansible.builtin.template:
     src: php/php.ini.j2
     dest: /etc/php.ini
@@ -9,7 +9,7 @@
     mode: '0644'
   become: true
 
-- name: copy configuration for opcache
+- name: Copy configuration for opcache
   ansible.builtin.template:
     src: php/php.d/10-opcache.ini.j2
     dest: /etc/php.d/10-opcache.ini
@@ -18,7 +18,7 @@
     mode: '0644'
   become: true
 
-- name: copy configuration for php-fpm/www.conf
+- name: Copy configuration for php-fpm/www.conf
   ansible.builtin.template:
     src: php/php-fpm.d/www.conf.j2
     dest: /etc/php-fpm.d/www.conf
@@ -30,7 +30,7 @@
   notify:
     - restart php-fpm
 
-- name: restart php-fpm to apply configuration
+- name: Restart php-fpm to apply configuration
   ansible.builtin.systemd:
     name: php-fpm
     enabled: true

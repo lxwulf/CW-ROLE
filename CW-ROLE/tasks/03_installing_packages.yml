@@ -1,17 +1,17 @@
 ---
 
-- name: installing needed packages
+- name: Installing needed packages
   ansible.builtin.dnf:
     name: "{{ packages }}"
     state: present
   become: true
 
-- name: installing psycopg2 for postgresql task
+- name: Installing psycopg2 for postgresql task
   ansible.builtin.pip:
     name: psycopg2-binary
   become: true
 
-- name: download nextcloud and unzip
+- name: Download nextcloud and unzip
   ansible.builtin.unarchive:
     src: https://download.nextcloud.com/server/releases/latest.zip
     dest: "{{ temp_path }}"
@@ -19,7 +19,7 @@
   args:
     creates: "{{ temp_path }}nextcloud/"
 
-- name: copy downloaded version to the right path with the correct permissions
+- name: Copy downloaded version to the right path with the correct permissions
   ansible.builtin.copy:
     src: "{{ temp_path }}/nextcloud/"
     dest: "{{ nextcloud_root_path }}"

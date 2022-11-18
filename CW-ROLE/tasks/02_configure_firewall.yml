@@ -1,6 +1,6 @@
 ---
 
-- name: open port 80/service http
+- name: Open port 80/service http
   ansible.posix.firewalld:
     service: http
     permanent: true
@@ -8,7 +8,7 @@
     state: enabled
   become: true
 
-- name: open port 443/service https
+- name: Open port 443/service https
   ansible.posix.firewalld:
     service: https
     permanent: true

@@ -1,6 +1,6 @@
 ---
 
-- name: add nginx to redis group
+- name: Add nginx to redis group
   ansible.builtin.user:
     name: nginx
     groups: redis
@@ -8,7 +8,7 @@
     state: present
   become: true
 
-- name: copy config file to remote-host
+- name: Copy config file to remote-host
   ansible.builtin.template:
     src: templates/redis/redis.conf.j2
     dest: /etc/redis/redis.conf
@@ -17,7 +17,7 @@
     mode: '0640'
   become: true
 
-- name: start redis service
+- name: Start redis service
   ansible.builtin.systemd:
     name: redis
     enabled: true
