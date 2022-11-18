@@ -13,7 +13,7 @@ client_user: ok                                                                 
 #####################
 
 fqdn_name: private.cloudwulf.ch                                                 # full query domain name
-remote_host_ip: 192.168.1.101                                                   # remote client local ip
+remote_host_ip: "{{ ansible_default_ipv4.address }}"                               # remote client local ip
 hostname: private                                                               # hostname of the remote client
 
 ntp_server0: 0.ch.pool.ntp.org                                                  # network time server
@@ -56,7 +56,7 @@ packages:
   - python3-certbot-nginx
   - python3-pip
 
-temp_path: /home/ok/                                                            # temporary path to download nextcloud, also
+temp_path: /{{ client_user }}/                                                  # temporary path to download nextcloud, also
                                                                                 # used in some other tasks as temporary download path
 
 nextcloud_root_path: /usr/share/nginx/nextcloud                                 # target path to copy content of the nextcloud zip file
