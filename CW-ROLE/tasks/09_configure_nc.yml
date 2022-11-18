@@ -1,18 +1,19 @@
 ---
 
 - name: initial installation of nextcloud
-  ansible.builtin.shell: |
-    php occ maintenance:install --database {{ nc_database_typ_setting }} \
-    --database-name {{ postgresql_db }} \
-    --database-user {{ postgresql_db_user }} \
-    --database-pass {{ postgresql_db_user_password }} \
-    --admin-user {{ nc_admin_user_setting }} \
-    --admin-pass {{ nc_admin_user_password_setting }} \
-  become: true
-  become_user: nginx
-  args:
+  ansible.builtin.command:
+    cmd: |
+      php occ maintenance:install
+      --database {{ nc_database_typ_setting }}
+      --database-name {{ postgresql_db }}
+      --database-user {{ postgresql_db_user }}
+      --database-pass {{ postgresql_db_user_password }}
+      --admin-user {{ nc_admin_user_setting }}
+      --admin-pass {{ nc_admin_user_password_setting }}
     chdir: "{{ nextcloud_root_path }}"
     creates: "{{ nextcloud_root_path }}/config/config.php"
+  become: true
+  become_user: nginx
 
 - name: set connection back to remote host ip {{ remote_host_ip }} in config/config.php
   ansible.builtin.lineinfile:
