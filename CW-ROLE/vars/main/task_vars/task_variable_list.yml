@@ -6,7 +6,7 @@
 
 target: tes                                                                     # hostgroup name
 client_password: OfficerK49                                                     # remote client password
-client_user: ok                                                                 # remote client user
+client_user: officerk                                                           # remote client user
 
 #####################
 # 01_configure_host #
@@ -56,7 +56,7 @@ packages:
   - python3-certbot-nginx
   - python3-pip
 
-temp_path: /{{ client_user }}/                                                  # temporary path to download nextcloud, also
+temp_path: /tmp/                                             # temporary path to download nextcloud, also
                                                                                 # used in some other tasks as temporary download path
 
 nextcloud_root_path: /usr/share/nginx/nextcloud                                 # target path to copy content of the nextcloud zip file
