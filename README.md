@@ -1,10 +1,10 @@
-# CW-ROLE v1.0
+# CW-ROLE
 
 ![logo](docs/src/logo_cw_role_optimized.svg)
 
 ---
 
-`CW-Role v1` is an automation repository build with Ansible. It
+`CW-Role` is an automation repository build with Ansible. It
 installs Nextcloud with your preferred settings from PHP over
 Redis until to the Nextcloud settings itself as far as it is
 possible and reasonable.
