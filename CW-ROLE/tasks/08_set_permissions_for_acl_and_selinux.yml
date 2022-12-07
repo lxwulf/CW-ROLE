@@ -1,7 +1,7 @@
 ---
 
 - name: Set RW permissions for nginx and php-fpm
-  community.general.system.sefcontext:
+  community.general.sefcontext:
     target: '{{ nextcloud_root_path }}(/.*)?'
     setype: httpd_sys_rw_content_t
     state: present
