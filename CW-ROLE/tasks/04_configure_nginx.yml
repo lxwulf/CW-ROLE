@@ -1,14 +1,5 @@
 ---
 
-- name: Creating folder for the nextcloud logs
-  ansible.builtin.file:
-    path: /var/log/nextcloud
-    owner: root
-    group: root
-    mode: '0711'
-    state: directory
-  become: true
-
 - name: Copy domain config to remote-host
   ansible.builtin.template:
     src: templates/nginx/domain.conf.j2
