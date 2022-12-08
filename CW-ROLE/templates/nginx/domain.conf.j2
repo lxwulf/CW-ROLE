@@ -25,8 +25,8 @@ server {
  
   root {{ domain_root_path }};                                                  # path to the root of your installation
  
-  access_log /var/log/nextcloud/nextcloud.access;                               # acces log of nextcloud
-  error_log /var/log/nextcloud/nextcloud.error;                                 # error log of nextcloud
+  access_log /var/log/nginx/nextcloud.access;                                   # acces log of nextcloud
+  error_log /var/log/nginx/nextcloud.error;                                     # error log of nextcloud
  
   client_max_body_size {{ client_max_body_size }};                              # set max upload size
   client_body_timeout 300s; 
